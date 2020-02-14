@@ -1,4 +1,6 @@
-{
+{ 
+  "parserOptions": { "ecmaVersion": 6 },
+  "env": { "es6": true },
   "root": true,
   "extends": ["prettier", "prettier/react"],
   "rules": {
