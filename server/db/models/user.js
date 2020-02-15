@@ -7,6 +7,7 @@ const User = db.define(
 	{
 		firstName: {
 			type: Sequelize.STRING,
+			allowNull: false,
 			validate: { 
 				is: {
 					args: ["^[a-z\-]+$",'i'],
@@ -16,6 +17,7 @@ const User = db.define(
 		},
 		lastName: {
 			type: Sequelize.STRING,
+			allowNull: false,
 			validate: {
 				is: {
 					args: ["^[a-z\-]+$",'i'],
@@ -36,6 +38,10 @@ const User = db.define(
 		},
 		password: {
 			type: Sequelize.STRING,
+			get() {
+				return () => this.getDataValue("password");
+			},
+			allowNull: false,
 			validate: {
 				// password check for deployment:
 				validPw(value) {
@@ -76,9 +82,6 @@ const User = db.define(
 				//   },
 				
 			},
-			get() {
-				return () => this.getDataValue("password");
-			}
 		},
 		userName: {
 			type: Sequelize.STRING,
@@ -201,10 +204,9 @@ const User = db.define(
 				}
 			}
 		},
-		isGuest: {
-			type: Sequelize.BOOLEAN,
-			default: false
-		},
+		// bankroll: {
+		// 	type: Sequelize.INTEGER,
+		// },
 		admin: {
 			type: Sequelize.BOOLEAN,
 			defaultValue: false
@@ -223,10 +225,12 @@ const User = db.define(
 		hooks: {
 			beforeCreate: user => {
 				user.address = `Apt ${user.apt}, ${user.houseNumber} ${user.street}, ${user.city}, ${user.zipcode}, ${user.state}, ${user.country}`;
+				// user.bankroll = 5000
 			},
 			beforeUpdate: user => {
 				user.address = `Apt ${user.apt}, ${user.houseNumber} ${user.street}, ${user.city}, ${user.zipcode}, ${user.state}, ${user.country}`;
-			}
+			},
+			
 		}
 	}
 );

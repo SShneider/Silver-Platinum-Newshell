@@ -12,7 +12,7 @@ const illegalPwResponses = ["Password must include at least one number", "Passwo
 "Password must be between 6 and 15 characters"]
 const addressCheck = ["country", "apt", "houseNumber", "street", "zipcode", "city", "state"]
 //arrays of variables to test end
-describe('User model', () => {
+xdescribe('User model', () => {
   beforeEach(() => {
     return db.sync({force: true})
   })
@@ -20,23 +20,29 @@ describe('User model', () => {
   describe('passwordTesting', () => {
     describe('correctPassword', () => {
     let cody
-    //testing valid password
-    before(async () => {
+    
+    beforeEach(async () => {
         cody = await User.create({
+          firstName: "Cody",
+          lastName: "Pumpkin",
           email: 'cody@puppybook.com',
           password: 'Cd123456*'
-        })
+        })})
+      //testing valid password
       
       it('returns true if the password is correct', () => {
         expect(cody.correctPassword('Cd123456*')).to.be.equal(true)
       })
-
       it('returns false if the password is incorrect', () => {
         expect(cody.correctPassword('bonez')).to.be.equal(false)
+      })//end testing valid password
+      it('the password is hidden', async () => {
+        let foundUser = await User.findByPk(1)
+        expect(typeof foundUser.password).to.be.equal('function')
       })
+     //end password manipulation tests
     })
-    })
-    // end testing valid password
+    
     //testing invalid passwords
     for(let i = 0; i<illegalPws.length; i++){
       it(`rejects pw - ${illegalPwResponses[i]}`, async () =>{
@@ -60,6 +66,11 @@ describe('User model', () => {
     it('rejects invalid email', async()=>{
       let createdUser = await createUser({...createUserObj, email: "cuddles@google.4com"})
           expect(createdUser).to.be.equal('Must be a valid email')
+    })
+    it("rejects accounts with duplicate email", async()=>{
+      await createUser(createUserObj)
+      let createDuplicate = await createUser(createUserObj)
+      expect(createDuplicate).to.be.equal("email must be unique")
     })
   })//email end test
   describe('userNameTesting', ()=>{
@@ -91,8 +102,44 @@ describe('User model', () => {
       let createdUser = await createUser(createUserObj)
       expect(createdUser.address).to.be.equal('Apt 55B, 77C Ocean Ave., New Yok, 11230, NY, St.Louis')
     })
-  })
+  })//Address test end
+  describe("empty required input", ()=>{
+    it("does not accept empty email", async()=>{
+      let createdUser = await createUser({firstName: "Cody",lastName: "Garbrant", password: "Abcdefg5$"})
+      expect(createdUser).to.be.equal("user.email cannot be null")
+    }) 
+    it("does not accept empty firstName", async()=>{
+      let createdUser = await createUser({email: "cody@puppy.com", lastName: "Garbrant", password: "Abcdefg5$"})
+      expect(createdUser).to.be.equal("user.firstName cannot be null")
+    }) 
+    it("does not accept empty lastName", async()=>{
+      let createdUser = await createUser({email: "cody@puppy.com", firstName: "Garbrant", password: "Abcdefg5$"})
+      expect(createdUser).to.be.equal("user.lastName cannot be null")
+    }) 
+    it("does not accept empty password", async()=>{
+      let createdUser = await createUser({email: "cody@puppy.com", firstName: "Garbrant", lastName: "Abcdefg"})
+      expect(createdUser).to.be.equal("user.password cannot be null")
+    }) 
+  })//Emtpy required input end
+  // describe("bankroll tests", () =>{
+  //   let cody
+  //   beforeEach(async () => {
+  //     cody = await User.create({
+  //       firstName: "Cody",
+  //       lastName: "Pumpkin",
+  //       email: 'cody@puppybook.com',
+  //       password: 'Cd123456*'
+  //     })})
+  //   it("sets the bankroll on create", () =>{
+  //     expect(cody.bankroll).to.be.equal(5000)
+  //   })
+  //   it("doesnt allow the bankroll to be overwritten", async () => {
+  //     cody.bankroll = 3000;
+      
+  //   })
+  // })
 }) 
+
 //helper function that creates the user
 async function createUser(userIn){
   try{
