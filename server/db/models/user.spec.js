@@ -3,14 +3,14 @@ const {expect} = require('chai')
 const db = require('../index')
 const User = db.model('user')
 //arrays of variables to test start
-
-const illegalChars = ["[",";","<",">","]"]
+const createUserObj = {email:"cody@puppybook.com", password:"Abcdefg4*", firstName:"Joh-n",
+lastName:"Joh-nny", userName:"Miracle", apt: "55B", city: "New Yok", houseNumber: "77C", street: "Ocean Ave.", zipcode: "11230", state: "NY", country: "St.Louis"}
 const illegalPws = ["Abcdefg*", "Abcdefg4", "abcdefg4*", "ABCDEFG4*", "ABCD<ef*4", "A4*a", "abcdefghijklmnopqrstu*1A"]
 const illegalPwResponses = ["Password must include at least one number", "Password must include at least one special character", 
 "Password must include at least one upper case character", 	"Password must include at least one lower case character",
 "Password must not include illegal characters", "Password must be between 6 and 15 characters", 
 "Password must be between 6 and 15 characters"]
-
+const addressCheck = ["country", "apt", "houseNumber", "street", "zipcode", "city", "state"]
 //arrays of variables to test end
 describe('User model', () => {
   beforeEach(() => {
@@ -40,7 +40,7 @@ describe('User model', () => {
     //testing invalid passwords
     for(let i = 0; i<illegalPws.length; i++){
       it(`rejects pw - ${illegalPwResponses[i]}`, async () =>{
-        let createdUser = await createUser('cody@puppybook.com', illegalPws[i])
+        let createdUser = await createUser({...createUserObj, email:'cody@puppybook.com', password:illegalPws[i]})
         expect(createdUser).to.be.equal(illegalPwResponses[i])
       })
     }
@@ -48,39 +48,57 @@ describe('User model', () => {
   }) //PW end test
   describe('nameTesting', ()=>{
     it('rejects firstname with illegal char', async()=>{
-      let createdUser = await createUser('cody@puppybook.com', 'Abcdefg4*', 'Jear&')
+      let createdUser = await createUser({...createUserObj, firstName: 'Jear%'})
           expect(createdUser).to.be.equal('Must be a legal name')
-    })
-    it('accepts legal firstname', async()=>{
-      let createdUser = await createUser('cody@puppybook.com', 'Abcdefg4*', 'Jear-meow')
-          expect(createdUser.firstName).to.be.equal('Jear-meow')
     })
     it('rejects lastname with illegal char', async()=>{
-      let createdUser = await createUser('cody@puppybook.com', 'Abcdefg4*', 'Jear', 'Cuddles_')
+      let createdUser = await createUser({...createUserObj, lastName: "Cuddles_"})
           expect(createdUser).to.be.equal('Must be a legal name')
-    })
-    it('accepts legal lastname', async()=>{
-      let createdUser = await createUser('cody@puppybook.com', 'Abcdefg4*', 'Jear-meow', 'Cuddles-pumpkernickel')
-          expect(createdUser.lastName).to.be.equal('Cuddles-pumpkernickel')
     })
   })//Name end test
   describe('emailTesting', ()=>{
     it('rejects invalid email', async()=>{
-      let createdUser = await createUser('cody@puppybook.4com', 'Abcdefg4*', 'Jear-meow', 'Cuddles-pumpkernickel')
+      let createdUser = await createUser({...createUserObj, email: "cuddles@google.4com"})
           expect(createdUser).to.be.equal('Must be a valid email')
     })
   })//email end test
+  describe('userNameTesting', ()=>{
+    it('rejects a username that is too short', async()=>{
+      let createdUser = await createUser({ ...createUserObj, userName:"wow"})
+          expect(createdUser).to.be.equal("Username must be between 5 and 15 characters long")
+    })
+    it('rejects a username that is too long', async()=>{
+      let createdUser = await createUser({ ...createUserObj, userName:"abcdefghijklmnopqrstu"})
+          expect(createdUser).to.be.equal("Username must be between 5 and 15 characters long")
+    })
+    it('rejects a username that is invalid', async()=>{
+      let createdUser = await createUser({ ...createUserObj, userName:"abrecadebre>"})
+          expect(createdUser).to.be.equal("Username can only contain valid letters and numbers")
+    })
+  })//username end test
+  describe("Address tests", ()=>{
+    addressCheck.forEach(entry => {
+      it(`rejects incorrect ${entry}`, async()=>{
+        let createdUser = await createUser({...createUserObj, [entry]: ">"})
+        expect(typeof createdUser).to.be.equal('string')
+      })
+    })
+    it("rejects country with invalid characters", async()=>{
+      let createdUser = await createUser({...createUserObj, country: "Burkina&Faso"})
+      expect(createdUser).to.be.equal("Must be a valid country")
+    })
+    it("assembles the address correctly", async() => {
+      let createdUser = await createUser(createUserObj)
+      expect(createdUser.address).to.be.equal('Apt 55B, 77C Ocean Ave., New Yok, 11230, NY, St.Louis')
+    })
+  })
 }) 
-//helper functions
-async function createUser(emailIn, passwordIn, firstName="John", lastName="John"){
+//helper function that creates the user
+async function createUser(userIn){
   try{
     let userOut = await User.create({
-    email: emailIn,
-    password: passwordIn,
-    firstName: firstName,
-    lastName: lastName,
+    ...userIn
     })
-    
     return userOut
   }catch(err){
     return err.errors[0].message.toString()

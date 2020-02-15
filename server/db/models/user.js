@@ -80,7 +80,7 @@ const User = db.define(
 				return () => this.getDataValue("password");
 			}
 		},
-		username: {
+		userName: {
 			type: Sequelize.STRING,
 			defaultValue: "YourUsername",
 			validate: {
@@ -159,6 +159,19 @@ const User = db.define(
 				}
 			}
 		},
+		city: {
+			type: Sequelize.STRING,
+			defaultValue: "",
+			validate: {
+				validAdd(value) {
+					if (value.match(/[;<>]/)) {
+						throw new Error(
+							"City name must not include illegal characters"
+						);
+					}
+				},
+			}
+		},
 		country: {
 			type: Sequelize.STRING,
 			defaultValue: "",
@@ -171,8 +184,8 @@ const User = db.define(
 					}
 				},
 				is: {
-					args: /^[a-z]*$/i,
-					msg: "Must be valid country"
+					args: /^[a-z\.]*$/i,
+					msg: "Must be a valid country"
 				}
 			}
 		},
@@ -209,14 +222,10 @@ const User = db.define(
 	{
 		hooks: {
 			beforeCreate: user => {
-				user.address = `${user.houseNumber}, ${user.street}, ${
-					user.apt
-				}, ${user.zipcode}, ${user.state}, ${user.country}`;
+				user.address = `Apt ${user.apt}, ${user.houseNumber} ${user.street}, ${user.city}, ${user.zipcode}, ${user.state}, ${user.country}`;
 			},
 			beforeUpdate: user => {
-				user.address = `${user.houseNumber}, ${user.street}, ${
-					user.apt
-				}, ${user.zipcode}, ${user.state}, ${user.country}`;
+				user.address = `Apt ${user.apt}, ${user.houseNumber} ${user.street}, ${user.city}, ${user.zipcode}, ${user.state}, ${user.country}`;
 			}
 		}
 	}
