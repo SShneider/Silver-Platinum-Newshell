@@ -7,34 +7,20 @@ const User = db.define(
 	{
 		firstName: {
 			type: Sequelize.STRING,
-			validate: {
-				validAdd(value) {
-					if (value.match(/[;<>]/)) {
-						throw new Error(
-							"First name must not include illegal characters"
-						);
-					}
-				},
-				isAlpha: {
-					args: true,
-					msg: "Must not contain numbers"
+			validate: { 
+				is: {
+					args: ["^[a-z\-]+$",'i'],
+					msg: "Must be a legal name"
 				} //HM Passport Office will not print numerals (0–9) on a passport — only alphabetical characters (A–Z), hypens and apostrophes.  If you have a number in your name and it appears on your original birth certificate, HM Passport Office will write out the number alphabetically, for example, as Super Eight or Four Real.  However names containing numbers on a deed poll will be refused.
 			}
 		},
 		lastName: {
 			type: Sequelize.STRING,
 			validate: {
-				validAdd(value) {
-					if (value.match(/[;<>]/)) {
-						throw new Error(
-							"Last name must not include illegal characters"
-						);
-					}
-				},
-				isAlpha: {
-					args: true,
-					msg: "Must not contain numbers"
-				}
+				is: {
+					args: ["^[a-z\-]+$",'i'],
+					msg: "Must be a legal name"
+				} //HM Passport Office will not print numerals (0–9) on a passport — only alphabetical characters (A–Z), hypens and apostrophes.  If you have a number in your name and it appears on your original birth certificate, HM Passport Office will write out the number alphabetically, for example, as Super Eight or Four Real.  However names containing numbers on a deed poll will be refused.
 			}
 		},
 		email: {
@@ -44,25 +30,19 @@ const User = db.define(
 			validate: {
 				isEmail: {
 					args: true,
-					msg: "Must be valid email"
+					msg: "Must be a valid email"
 				}
 			}
 		},
 		password: {
 			type: Sequelize.STRING,
 			validate: {
-				// simple password check for dev:
-
-				// isAlphanumeric:
-				//   {
-				//     args:true,
-				//     msg: "Password can only contain valid letters and numbers"
-				//   },
 				// password check for deployment:
 				validPw(value) {
-					switch (value) {
-						case !value.match(/[0-9]/):
-							throw new Error(
+          
+					switch (true) {
+						case (!value.match(/[0-9]/)):
+              				throw new Error(
 								"Password must include at least one number"
 							);
 						case !value.match(/[!@#$%^&*]/):
@@ -77,17 +57,24 @@ const User = db.define(
 							throw new Error(
 								"Password must include at least one lower case character"
 							);
-						case value.match(/[;<>]/):
+						case !!value.match(/[;<>]/):
 							throw new Error(
 								"Password must not include illegal characters"
 							);
 					}
 				},
-
 				len: {
 					args: [6, 15],
 					msg: "Password must be between 6 and 15 characters"
-				}
+        }
+        	// simple password check for dev:
+
+				// isAlphanumeric:
+				//   {
+				//     args:true,
+				//     msg: "Password can only contain valid letters and numbers"
+				//   },
+				
 			},
 			get() {
 				return () => this.getDataValue("password");

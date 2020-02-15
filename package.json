@@ -20,7 +20,6 @@
     "start-server": "nodemon server -e html,js,scss --ignore public --ignore client",
     "test": "NODE_ENV='test' mocha \"./server/**/*.spec.js\" \"./client/**/*.spec.js\" \"./script/**/*.spec.js\" --require @babel/polyfill --require @babel/register"
   },
-  
   "author": "Sergei Shneider",
   "license": "MIT",
   "dependencies": {
@@ -68,14 +67,13 @@
     "chai": "^4.2.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
-    "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-react": "^7.18.3",
     "eslint-utils": "^2.0.0",
     "git-url-parse": "^11.1.2",
     "husky": "^4.2.3",
     "lint-staged": "^10.0.7",
-    "mocha": "^6.2.2",
+    "mocha": "^7.0.1",
     "nodemon": "^1.19.4",
     "npm-merge-driver": "^2.3.5",
     "prettier": "1.11.1",
