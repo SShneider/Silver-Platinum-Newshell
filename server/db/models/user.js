@@ -204,9 +204,13 @@ const User = db.define(
 				}
 			}
 		},
-		// bankroll: {
-		// 	type: Sequelize.INTEGER,
-		// },
+		bankroll: {
+			type: Sequelize.INTEGER,
+			defaultValue: 5000,
+			set(value){
+				this.setDataValue('bankroll', this.bankroll+value)
+			}
+		},
 		admin: {
 			type: Sequelize.BOOLEAN,
 			defaultValue: false
@@ -225,7 +229,6 @@ const User = db.define(
 		hooks: {
 			beforeCreate: user => {
 				user.address = `Apt ${user.apt}, ${user.houseNumber} ${user.street}, ${user.city}, ${user.zipcode}, ${user.state}, ${user.country}`;
-				// user.bankroll = 5000
 			},
 			beforeUpdate: user => {
 				user.address = `Apt ${user.apt}, ${user.houseNumber} ${user.street}, ${user.city}, ${user.zipcode}, ${user.state}, ${user.country}`;

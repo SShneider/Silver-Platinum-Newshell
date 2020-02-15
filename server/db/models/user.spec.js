@@ -12,7 +12,7 @@ const illegalPwResponses = ["Password must include at least one number", "Passwo
 "Password must be between 6 and 15 characters"]
 const addressCheck = ["country", "apt", "houseNumber", "street", "zipcode", "city", "state"]
 //arrays of variables to test end
-xdescribe('User model', () => {
+describe('User model', () => {
   beforeEach(() => {
     return db.sync({force: true})
   })
@@ -121,23 +121,19 @@ xdescribe('User model', () => {
       expect(createdUser).to.be.equal("user.password cannot be null")
     }) 
   })//Emtpy required input end
-  // describe("bankroll tests", () =>{
-  //   let cody
-  //   beforeEach(async () => {
-  //     cody = await User.create({
-  //       firstName: "Cody",
-  //       lastName: "Pumpkin",
-  //       email: 'cody@puppybook.com',
-  //       password: 'Cd123456*'
-  //     })})
-  //   it("sets the bankroll on create", () =>{
-  //     expect(cody.bankroll).to.be.equal(5000)
-  //   })
-  //   it("doesnt allow the bankroll to be overwritten", async () => {
-  //     cody.bankroll = 3000;
-      
-  //   })
-  // })
+  describe("bankroll tests", () =>{
+    let cody
+    beforeEach(async () => {
+      cody = await User.create({
+        firstName: "Cody",
+        lastName: "Pumpkin",
+        email: 'cody@puppybook.com',
+        password: 'Cd123456*'
+      })})
+    it("sets the bankroll on create", () =>{
+      expect(cody.bankroll).to.be.equal(5000)
+    })
+   })
 }) 
 
 //helper function that creates the user
