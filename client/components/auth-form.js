@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {auth} from '../store'
-
+import {Form, Button} from 'react-bootstrap'
 /**
  * COMPONENT
  */
@@ -11,36 +11,43 @@ const AuthForm = props => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} name={name}>
-        <div>
-          <label htmlFor="firstName">
-            <small>First Name</small>
-          </label>
-          <input name="firstName" type="text" />
-        </div>
-        <div>
-          <label htmlFor="lastName">
-            <small>Last Name</small>
-          </label>
-          <input name="lastName" type="text" />
-        </div>
-        <div>
-          <label htmlFor="email">
-            <small>Email</small>
-          </label>
-          <input name="email" type="text" />
-        </div>
-        <div>
-          <label htmlFor="password">
-            <small>Password</small>
-          </label>
-          <input name="password" type="password" />
-        </div>
-        <div>
-          <button type="submit">{displayName}</button>
-        </div>
-        {error && error.response && <div> {error.response.data} </div>}
-      </form>
+      <Form onSubmit={handleSubmit} name={name}>
+      {name==="signup" ?
+      (<Form.Group>
+        <Form.Group controlId = "firstName">
+          <Form.Label>First Name</Form.Label>
+          <Form.Control type="text" placeholder ="Enter your First Name"/>
+        </Form.Group>
+        <Form.Group controlId = "lastName">
+          <Form.Label>Last Name</Form.Label>
+          <Form.Control type="text" placeholder ="Enter your Last Name"/>
+        </Form.Group>
+        </Form.Group>
+        ) :(<div></div>)}
+        <Form.Group controlId = "email">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control type="email" placeholder ="Enter your email"/>
+          <Form.Text className="text-muted">
+           We'll never share your email with anyone else.
+          </Form.Text>
+        </Form.Group>
+        <Form.Group controlId = "password">
+          <Form.Label>Password</Form.Label>
+          <Form.Control type="password" placeholder ="Password"/>
+          <Form.Text className="text-muted">
+          Password must be between 5 and 15 characters long and include at least one of each of the following:
+          A lower case letter
+          An upper case letter
+          A number
+          A special character
+         </Form.Text>
+        </Form.Group>
+          <Button variant="primary" type="submit">
+           {displayName}
+          </Button>
+          {error && error.response && <div> {error.response.data} </div>}
+         </Form>
+
       <a href="/auth/google">{displayName} with Google</a>
     </div>
   )
@@ -73,12 +80,16 @@ const mapDispatch = dispatch => {
   return {
     handleSubmit(evt) {
       evt.preventDefault()
-      const formName = evt.target.name
-      const email = evt.target.email.value
-      const password = evt.target.password.value
-      const firstName = evt.target.firstName.value
-      const lastName = evt.target.lastName.value
-      dispatch(auth(email, password, firstName, lastName, formName))
+      const formName =evt.target.name
+      const formInput = {   
+      email:evt.target.email.value,
+      password:evt.target.password.value,
+      }
+      
+      if(formName === 'signup') formInput = {...formInput, 
+        firstName: evt.target.firstName.value,
+        lastName: evt.target.lastName.value}
+      dispatch(auth(formInput, formName))
     }
   }
 }
