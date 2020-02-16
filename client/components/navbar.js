@@ -3,29 +3,42 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
+import {Navbar, Nav, Form, FormControl, Button} from 'react-bootstrap'
+const OurNavbar = ({handleClick, isLoggedIn, clientName}) => (
 
-const Navbar = ({handleClick, isLoggedIn}) => (
-  <div>
-    <h1>BOILERMAKER</h1>
-    <nav>
+    <Navbar bg="dark" variant="dark">
+    <Navbar.Brand href="/home">Silver Platinum Stocks</Navbar.Brand>
+    
       {isLoggedIn ? (
-        <div>
+        <Nav>
+        <Nav className="mr-auto">
           {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
-        </div>
+          <Nav.Link href="/portfolio">Portfolio</Nav.Link>
+          <Nav.Link href="/transactions">Transactions</Nav.Link>
+          <Nav.Link href="#"  onClick={handleClick}>Logout</Nav.Link>
+          
+          </Nav>
+          <Navbar.Toggle />
+          <Navbar.Collapse className="justify-content-end">
+       <Navbar.Text>
+       Signed in as: <a href="/profile">{clientName}</a>
+        </Navbar.Text>
+          <Form inline>
+          <FormControl type="text" placeholder="Search For Ticker" className="mr-sm-2" />
+          <Button variant="outline-light">Search</Button>
+        </Form>
+        </Navbar.Collapse>
+        </Nav>
       ) : (
-        <div>
+        <Nav className="mr-auto">
           {/* The navbar will show these links before you log in */}
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
-        </div>
+          <Nav.Link href="/login">Login</Nav.Link>
+          <Nav.Link href="/signup">Sign Up</Nav.Link>
+          </Nav>
       )}
-    </nav>
-    <hr />
-  </div>
+  
+  </Navbar>
+
 )
 
 /**
@@ -33,7 +46,8 @@ const Navbar = ({handleClick, isLoggedIn}) => (
  */
 const mapState = state => {
   return {
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    clientName: `${state.user.firstName} ${state.user.lastName}` 
   }
 }
 
@@ -45,12 +59,12 @@ const mapDispatch = dispatch => {
   }
 }
 
-export default connect(mapState, mapDispatch)(Navbar)
+export default connect(mapState, mapDispatch)(OurNavbar)
 
 /**
  * PROP TYPES
  */
-Navbar.propTypes = {
+OurNavbar.propTypes = {
   handleClick: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired
 }
