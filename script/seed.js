@@ -2,11 +2,10 @@
 
 const db = require("../server/db");
 const {User} = require("../server/db/models");
-
+const {Transaction} = require("../server/db/models");
 async function seed() {
 	await db.sync({force: true});
 	console.log("db synced!");
-
 	const users = await Promise.all([
 		User.create({email: "cody@email.com",
 			password: "Ab123456*",
@@ -30,8 +29,36 @@ async function seed() {
 			zipcode: "11111",
 			state: "NY"
 		})
+		
 	]);
-
+	const transactions = await Promise.all([
+		Transaction.create({
+			ticker: "TSLA",
+			priceAtTransaction: 800.03,
+			quantity: 20,
+			userId: 1,
+		}),
+		Transaction.create({
+			ticker: "AMZN",
+			priceAtTransaction: 2134.87,
+			quantity: 500,
+			userId: 1,
+		}),
+		Transaction.create({
+			ticker: "IBM",
+			priceAtTransaction: 150.7,
+			quantity: 50,
+			userId: 1,
+			sold: true,
+		}),
+		Transaction.create({
+			ticker: "ORCL",
+			priceAtTransaction: 55.47,
+			quantity: 150,
+			userId: 2,
+		})
+	])
+	console.log(`seeded ${transactions.length} transactions`)
 	console.log(`seeded ${users.length} users`);
 	console.log(`seeded successfully`);
 }
