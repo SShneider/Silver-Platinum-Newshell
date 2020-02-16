@@ -12,7 +12,7 @@ const illegalPwResponses = ["Password must include at least one number", "Passwo
 "Password must be between 6 and 15 characters"]
 const addressCheck = ["country", "apt", "houseNumber", "street", "zipcode", "city", "state"]
 //arrays of variables to test end
-describe('User model', () => {
+xdescribe('User model', () => {
   beforeEach(() => {
     return db.sync({force: true})
   })
