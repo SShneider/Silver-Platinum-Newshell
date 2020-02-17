@@ -46,8 +46,8 @@ const OurNavbar = ({handleClick, isLoggedIn, clientName}) => (
  */
 const mapState = state => {
   return {
-    isLoggedIn: !!state.user.id,
-    clientName: `${state.user.firstName} ${state.user.lastName}` 
+    isLoggedIn: !!state.user.loggedInUser.id || !!state.user.user.admin,
+    clientName: `${state.user.loggedInUser.firstName} ${state.user.loggedInUser.lastName}` 
   }
 }
 

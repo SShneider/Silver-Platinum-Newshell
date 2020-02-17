@@ -22,6 +22,7 @@ router.get('/', async (req, res, next) => {
     next(err)
   }
 })
+
 router.get('/portfolio', async (req, res, next) => {
   try {
     const transactions = await Transaction.findAll({
@@ -35,6 +36,7 @@ router.get('/portfolio', async (req, res, next) => {
     next(err)
   }
 })
+
 router.get('/all', async (req, res, next) => {
     if(!req.user.admin) res.status(401).end()
     try {
