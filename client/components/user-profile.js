@@ -12,7 +12,8 @@ class UserProfile extends React.Component {
 		}
 	}
 	componentDidMount() {
-		if (this.props.match) this.props.findUser(this.props.match.params.id)
+		
+		if (this.props.match) {this.props.findUser(this.props.match.params.id)}
 	}
 	render() {
 		let ifAdmin
@@ -32,7 +33,7 @@ class UserProfile extends React.Component {
 			display: displayAdmin
 		}
 		let uservalue
-		if (this.props.user.user) uservalue = this.props.user.user
+		if (this.props.user.requestedUser) uservalue = this.props.user.requestedUser
 		else uservalue = this.props.user
 		const { username, firstName, lastName, address, email } = uservalue
 		return (
@@ -68,7 +69,7 @@ class UserProfile extends React.Component {
 }
 const mapState = (state, ownProps) => {
 	return {
-		user: ownProps.user || state.user,
+		user: ownProps.user || state.userState,
 		islist: ownProps.islist || false
 	}
 }

@@ -17,7 +17,7 @@ class AllUsers extends Component {
 						return (
 							<div key={user.id}>
 								<UserProfile user={user} islist={true} />
-								<Link to={`/profile`}>
+								<Link to={`/profile/${user.id}`}>
 									<button>Go to User Page</button>
 								</Link>
 							</div>
@@ -30,7 +30,7 @@ class AllUsers extends Component {
 
 const mapState = state => {
 	return {
-		allUsers: state.user.allUsers
+		allUsers: state.userState.allUsers
 	}
 }
 const mapDispatch = dispatch => {

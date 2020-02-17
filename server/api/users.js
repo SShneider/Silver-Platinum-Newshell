@@ -2,27 +2,29 @@ const router = require('express').Router()
 const { User } = require('../db/models')
 
 module.exports = router
-
+let idValue
 const verifyLoggedIn = async (req, res, next) => {
-  if(!req.user){
+  if(!req.user || req.query && !req.user.admin){
     res.status(401).send('Insufficient Rights')
   }
-  else{
+  else {
+    req.query.id ? idValue = req.query.id : idValue = req.user.id
     next()
   }
 }
 router.use(verifyLoggedIn)
 router.get('/', async (req, res, next) => {
 	try {
+    console.log(req.params)
     const user = await User.findAll({
       where: {
-        id: req.user.id
+        id: idValue
       },
       attributes: [
         'id',
         'email',
         'address',
-        'username',
+        'userName',
         'firstName',
         'lastName',
         'apt',
@@ -34,6 +36,7 @@ router.get('/', async (req, res, next) => {
         'admin'
       ]
     })
+    //console.log(user)
 			res.json(user)
 	} catch (error) {
 		next(error)
@@ -64,7 +67,7 @@ router.put('/', async (req, res, next) => {
 					{
 						email: req.body.email,
 						password: req.body.password,
-						username: req.body.username,
+						userName: req.body.userName,
 						firstName: req.body.firstName,
 						lastName: req.body.lastName,
 						apt: req.body.apt,
@@ -88,7 +91,7 @@ router.put('/', async (req, res, next) => {
 router.delete('/', async (req, res, next) => {
 	try {
 			const destroyed = await User.destroy({
-				where: { id: req.user.id }
+				where: { id: idValue }
 			})
 			res.json(destroyed)
 	} catch (error) {

@@ -15,9 +15,9 @@ const REMOVE_AS_ADMIN = 'REMOVE_AS_ADMIN'
  * INITIAL STATE
  */
 const initialState = {
-	allUsers: [],
-	user: {},
-	loggedInUser: {}
+	allUsers: [], //All users -> only accessible to admin
+	requestedUser: {},//user lookup for admin
+	loggedInUser: {} 
 }
 
 /**
@@ -67,9 +67,9 @@ export const updateUserThunk = user => async dispatch => {
 		console.error(error)
 	}
 }
-export const findSingleUserThunk = user => async dispatch => {
+export const findSingleUserThunk = (user) => async dispatch => {
 	try {
-		const { data } = await axios.get(`/api/users/${user}`)
+		const { data } = await axios.get(`/api/users/`, {params: {id: user}})
 		dispatch(findSingleUser(data[0]))
 	} catch (error) {
 		console.error(error)
@@ -130,7 +130,7 @@ export default function(state = initialState, action) {
 		case REMOVE_USER:
 			return {
 				...state,
-				user: initialState.user,
+				requestedUser: initialState.user,
 				loggedInUser: initialState.user
 			}
 		case REMOVE_AS_ADMIN:
@@ -139,11 +139,11 @@ export default function(state = initialState, action) {
 				user: initialState.user
 			}
 		case FIND_SINGLE_USER:
-			return { ...state, user: action.user }
+			return { ...state, requestedUser: action.user }
 		case ALL_USERS:
 			return { ...state, allUsers: action.users }
 		case UPDATE_USER:
-			return { ...state, user: action.user }
+			return { ...state, requestedUser: action.user }
 		default:
 			return state
 	}
