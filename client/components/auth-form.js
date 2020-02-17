@@ -61,19 +61,20 @@ const AuthForm = props => {
  *   can stay DRY with interfaces that are very similar to each other!
  */
 const mapLogin = state => {
-  return {
-    name: 'login',
-    displayName: 'Login',
-    error: state.user.error
-  }
+	return {
+		name: 'login',
+		displayName: 'Login',
+		error: state.userState.loggedInUser.error,
+		cart: state.cart
+	}
 }
 
 const mapSignup = state => {
-  return {
-    name: 'signup',
-    displayName: 'Sign Up',
-    error: state.user.error
-  }
+	return {
+		name: 'signup',
+		displayName: 'Sign Up',
+		error: state.userState.loggedInUser.error
+	}
 }
 
 const mapDispatch = dispatch => {
