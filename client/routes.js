@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {Login, Signup, UserHome, UserProfile, AllUsers} from './components'
-import {me} from './store'
+import {Login, Signup, UserProfile, AllUsers} from './components'
+import {me} from './store/index'
 
 /**
  * COMPONENT
@@ -24,7 +24,6 @@ class Routes extends Component {
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
-            <Route path="/home" component={UserHome} />
             <Route path="/profile/:id" component={UserProfile}/> //A user will never see this, strictly for admin access
             <Route path="/profile" component={UserProfile}/>
             <Route path="/users" component={AllUsers} />
