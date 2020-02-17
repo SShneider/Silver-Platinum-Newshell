@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
-import {auth} from '../store'
+import {auth} from '../store/index'
 import {Form, Button} from 'react-bootstrap'
 /**
  * COMPONENT
@@ -11,16 +11,16 @@ const AuthForm = props => {
 
   return (
     <div>
-      <Form onSubmit={handleSubmit} name={name}>
+      <Form onSubmit={handleSubmit} name={name} className="mr-auto ml-auto mt-3 w-25 p-3">
       {name==="signup" ?
       (<Form.Group>
         <Form.Group controlId = "firstName">
           <Form.Label>First Name</Form.Label>
-          <Form.Control type="text" placeholder ="Enter your First Name"/>
+          <Form.Control type="text-muted" placeholder ="Enter your First Name"/>
         </Form.Group>
         <Form.Group controlId = "lastName">
           <Form.Label>Last Name</Form.Label>
-          <Form.Control type="text" placeholder ="Enter your Last Name"/>
+          <Form.Control type="text-muted" placeholder ="Enter your Last Name"/>
         </Form.Group>
         </Form.Group>
         ) :(<div></div>)}
@@ -35,11 +35,11 @@ const AuthForm = props => {
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" placeholder ="Password"/>
           <Form.Text className="text-muted">
-          Password must be between 5 and 15 characters long and include at least one of each of the following:
-          A lower case letter
-          An upper case letter
-          A number
-          A special character
+          {name==="signup" ? (<span>   Password must be between 5 and 15 characters long and include at least one of each of the following:
+          <li>A lower case letter</li>
+          <li>An upper case letter</li>
+          <li>A number</li>
+          <li>A special character</li></span>) : (<span></span>)}
          </Form.Text>
         </Form.Group>
           <Button variant="primary" type="submit">

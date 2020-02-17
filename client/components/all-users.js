@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { allUsersThunk, me } from '../store'
+import { allUsersThunk, me } from '../store/index'
 import { UserProfile } from './index.js'
 import { Link } from 'react-router-dom'
+import {Button, Nav} from 'react-bootstrap'
 
 class AllUsers extends Component {
 	componentDidMount() {
@@ -17,9 +18,9 @@ class AllUsers extends Component {
 						return (
 							<div key={user.id}>
 								<UserProfile user={user} islist={true} />
-								<Link to={`/profile/${user.id}`}>
-									<button>Go to User Page</button>
-								</Link>
+								<Nav.Link href={`/profile/${user.id}`}  className="ml-50">
+									<Button variant="danger">Go to User Page</Button>
+								</Nav.Link>
 							</div>
 						)
 					})}

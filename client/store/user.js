@@ -86,8 +86,8 @@ export const allUsersThunk = () => async dispatch => {
 }
 export const me = () => async dispatch => {
   try {
-    const res = await axios.get('/auth/me')
-    dispatch(getUser(res.data || defaultUser))
+	const res = await axios.get('/auth/me')
+    dispatch(getUser(res.data || {}))
   } catch (err) {
     console.error(err)
   }
@@ -102,7 +102,7 @@ export const auth = (formData, method) => async dispatch => {
   }
 
   try {
-    dispatch(getUser(res.data))
+    dispatch(getUser(res.data ))
     history.push('/home')
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
@@ -130,8 +130,8 @@ export default function(state = initialState, action) {
 		case REMOVE_USER:
 			return {
 				...state,
-				requestedUser: initialState.user,
-				loggedInUser: initialState.user
+				requestedUser: initialState.requestedUser,
+				loggedInUser: initialState.loggedInUser
 			}
 		case REMOVE_AS_ADMIN:
 			return {

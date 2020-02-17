@@ -4,7 +4,6 @@
  * having to figure out which file they belong to!
  */
 export {default as Navbar} from './navbar'
-export {default as UserHome} from './user-home'
 export {default as UserProfile} from './user-profile'
 export { default as AllUsers } from './all-users'
 export {Login, Signup} from './auth-form'
