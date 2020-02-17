@@ -55,7 +55,7 @@ async function seed() {
 			ticker: "ORCL",
 			priceAtTransaction: 55.47,
 			quantity: 150,
-			userId: 2,
+			userId: 3,
 		})
 	])
 	console.log(`seeded ${transactions.length} transactions`)
