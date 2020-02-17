@@ -15,7 +15,7 @@ const verifyLoggedIn = async (req, res, next) => {
 router.use(verifyLoggedIn)
 router.get('/', async (req, res, next) => {
 	try {
-    console.log(req.params)
+    //console.log(req.params)
     const user = await User.findAll({
       where: {
         id: idValue
