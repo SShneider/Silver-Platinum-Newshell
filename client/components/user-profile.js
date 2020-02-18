@@ -31,29 +31,33 @@ class UserProfile extends React.Component {
 			display: displaybutton
 		}
 		let displayAdmin = 'none'
-		if (ifAdmin) displayAdmin = 'block' //displays admin panel if the user logged in has
-		//admin priveleges 
-		const adminPanel = {
-			display: displayAdmin
-		}
+		let updateLink = `/profile/update` //masks the fact that other users can be accessed
+	
 		let uservalue
 		if (this.props.user.requestedUser) uservalue = this.props.user.requestedUser
 		else uservalue = this.props.user //checks if the user requested their own profile
 		//or if admin requested someone elses
+		if (ifAdmin) {
+			displayAdmin = 'block' //displays admin panel if the user logged in has
+			updateLink = `/profile/${uservalue.id}/update`} 
+		//admin priveleges 
+		const adminPanel = {
+			display: displayAdmin
+		}
 		const { userName, firstName, lastName, address, email } = uservalue
 		return (
 				<Card bg="info" text="white" className="mr-auto ml-auto mt-3 w-25">
 					<Card.Header><h3>Welcome, {firstName} {lastName}</h3></Card.Header>
 					<Card.Body className="pl-3 pb-3">
 						<ListGroup>
-							<ListGroupItem variant="info">Username: {userName}</ListGroupItem>
+						
 							<ListGroupItem variant="info">Name: {firstName} {lastName}</ListGroupItem>
 							<ListGroupItem variant="info">Address: {address}</ListGroupItem>
 							<ListGroupItem variant="info">Email: {email}</ListGroupItem>
 						</ListGroup>
 						<div style={displayStyle}>
 					<Card.Link className="pt-3 pb-3 d-flex justify-content-center"
-						href={`/profile/${uservalue.id}/update`}
+						href={updateLink}
 					>
 						<Button variant="primary">Edit Info</Button>
 					</Card.Link></div>

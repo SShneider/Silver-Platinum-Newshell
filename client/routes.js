@@ -24,6 +24,7 @@ class Routes extends Component {
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
+            <Route path="/profile/update" component={UserUpdate}/>
             <Route path="/profile/:id/update" component={UserUpdate}/>
             <Route path="/profile/:id" component={UserProfile}/>  {/* A user will never see this, strictly for admin access */}
             <Route path="/profile" component={UserProfile}/>

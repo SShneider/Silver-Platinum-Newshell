@@ -4,7 +4,7 @@ const { User } = require('../db/models')
 module.exports = router
 let idValue
 const verifyLoggedIn = async (req, res, next) => {
-  if(!req.user || req.query && !req.user.admin){
+  if(!req.user || req.query.id && !req.user.admin){
     res.status(401).send('Insufficient Rights')
   }
   else {
@@ -15,7 +15,6 @@ const verifyLoggedIn = async (req, res, next) => {
 router.use(verifyLoggedIn)
 router.get('/', async (req, res, next) => {
 	try {
-    //console.log(req.params)
     const user = await User.findAll({
       where: {
         id: idValue
@@ -36,8 +35,7 @@ router.get('/', async (req, res, next) => {
         'admin'
       ]
     })
-    //console.log(user)
-			res.json(user)
+		res.json(user)
 	} catch (error) {
 		next(error)
 	}
@@ -63,11 +61,10 @@ router.get('/all', async (req, res, next) => {
 
 router.put('/', async (req, res, next) => {
 	try {
-				await User.update(
+			let user = await User.update(
 					{
 						email: req.body.email,
 						password: req.body.password,
-						userName: req.body.userName,
 						firstName: req.body.firstName,
 						lastName: req.body.lastName,
 						apt: req.body.apt,
@@ -75,16 +72,17 @@ router.put('/', async (req, res, next) => {
 						houseNumber: req.body.houseNumber,
 						zipcode: req.body.zipcode,
 						state: req.body.state,
-						country: req.body.country
+						country: req.body.country,
+						admin: req.body.admin
 					},
 					{
-						where: { id: req.params.id },
+						where: { id: idValue },
 						individualHooks: true
 					}
 				)
 		res.json(user)
 	} catch (error) {
-		res.status(401).send(error.message)
+		next(error)
 	}
 })
 

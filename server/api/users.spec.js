@@ -6,30 +6,16 @@ const db = require('../db')
 const app = require('../index')
 const User = db.model('user')
 
-xdescribe('User routes', () => {
-  beforeEach(() => {
-    return db.sync({force: true})
-  })
-
-  describe('/api/users/', () => {
-    const codysEmail = 'cody@puppybook.com'
-
+describe('User routes', () => {
+  describe('Logged out users shouldnt be able to access', ()=>{
     beforeEach(() => {
-      return User.create({
-        email: codysEmail,
-        password: "Abcdefgh4*",
-        firstName: "Cody",
-        lastName: "Pickles"
-      })
+      return db.sync({force: true})
     })
-
-    it('GET /api/users', async () => {
-      const res = await request(app)
-        .get('/api/users')
-        .expect(200)
-
-      expect(res.body).to.be.an('array')
-      expect(res.body[0].email).to.be.equal(codysEmail)
+    it('user lookup', async()=>{
+      await request(app).get('/api/users/').expect(401)
     })
-  }) // end describe('/api/users')
+    it('all users lookup', async()=>{
+      await request(app).get('/api/users/all').expect(401)
+    })
+  }) // end logged out user tests
 }) // end describe('User routes')

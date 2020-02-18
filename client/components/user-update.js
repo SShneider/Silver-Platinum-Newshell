@@ -15,7 +15,6 @@ class UserUpdate extends React.Component {
 		this.state = {
 			allUsers: [],
 			user: {
-				userName: '',
 				email: '',
 				firstName: '',
 				lastName: '',
@@ -35,16 +34,21 @@ class UserUpdate extends React.Component {
 		this.handleOnDelete = this.handleOnDelete.bind(this)
 	}
 	componentDidMount() {
-		
-		// if (this.props.match && this.props.match.params.id) {
-		// 	this.props.findUser(this.props.match.params.id)
-		// 	this.setState({ user: this.props.user.user })
-		// } else 
-	
-		if (this.props.loggedInUser.id) {
-			//this.props.findUser(this.props.loggedInUser.id)
+		if (this.props.match && this.props.match.params.id) {
+			this.props.findUser(this.props.match.params.id)
+			this.setState({ user: this.props.user})
+		} else if (this.props.loggedInUser.id) {
+			this.props.findUser(this.props.loggedInUser.id)
 			this.setState({ user: this.props.loggedInUser })
 		}
+
+		// if (this.props.match && this.props.match.params.id) {
+		// 	this.props.findUser(this.props.match.params.id)
+		// 	if(this.props.user) this.setState({ user: this.props.user })
+		// } else if (this.props.loggedInUser.id) {
+		// 	//this.props.findUser(this.props.loggedInUser.id)
+		// 	this.setState({ user: this.props.loggedInUser })
+		// }
 	}
 
 	handleOnDelete(id, admin) {
@@ -64,7 +68,6 @@ class UserUpdate extends React.Component {
 		event.preventDefault()
 
 		const data = {
-			username: this.state.user.userName,
 			id: this.props.match.params.id,
 			email: this.state.user.email,
 			firstName: this.state.user.firstName,
@@ -82,12 +85,10 @@ class UserUpdate extends React.Component {
 	}
 	render() {
 		let userObj
-		if (this.state.user.userName) userObj = this.state.user
-		else if (this.props.user) userObj = this.props.user
-
+		if (this.props.user) userObj = this.props.user
+		else if (this.props.loggedInUser) userObj = this.props.loggedInUser
 		let {
 			email,
-			userName,
 			firstName,
 			lastName,
 			houseNumber,
@@ -103,19 +104,7 @@ class UserUpdate extends React.Component {
 		const displayStyle = {
 			display: displaybutton
 		}
-		let delStyle = 'none'
-		if (this.props.match) {
-			if (
-				this.props.loggedInUser.id ===
-					parseInt(this.props.match.params.id) ||
-				this.props.loggedInUser.admin
-			)
-				delStyle = 'block'
-		}
-		const displayDel = {
-			display: delStyle
-		}
-
+	
 		return (
 			<div>
 				<Form 
@@ -124,17 +113,6 @@ class UserUpdate extends React.Component {
 				>
 					{error &&
 						error.response && <div> {error.response.data} </div>}
-					<Form.Group controlId = "userName">
-					<Form.Label>Username: </Form.Label>
-
-					<Form.Control
-						type="text"
-						name="userName"
-						defaultValue={userName}
-						onChange={this.handleOnChange}
-						maxLength="15"
-					/>
-					</Form.Group>
 					<Form.Group controlId = "email">
 					<Form.Label>EMail: </Form.Label>
 					<Form.Control
@@ -242,14 +220,14 @@ class UserUpdate extends React.Component {
 							Submit
 						</Button>
 				</Form>
-				<Form style={displayDel}
-					onSubmit={() => this.handleOnDelete(
-						this.props.match.params.id,
-						this.props.loggedIn
-					)}
+				<Form 
+					
 					className="mr-auto ml-auto mt-3 w-50 p-3 border rounded"
 				>
-					<Button type="submit" variant="danger">TERMINATE ACCOUNT</Button>
+					<Button onClick={() => this.handleOnDelete(
+						this.props.match.params.id,
+						this.props.loggedInUser
+					)} type="delete" variant="danger">TERMINATE ACCOUNT</Button>
 				</Form>
 				
 			</div>
@@ -260,7 +238,7 @@ const mapState = state => {
 	return {
 		user: state.userState.requestedUser,
 		loggedInUser: state.userState.loggedInUser,
-		error: state.userState.requestedUser.error
+		error: state.userState.loggedInUser.error
 	}
 }
 
