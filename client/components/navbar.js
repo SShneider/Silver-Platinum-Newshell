@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
 import {logout} from '../store/index'
-import {Navbar, Nav, Form, FormControl, Button, NavItem} from 'react-bootstrap'
+import {Navbar, Nav, Form, FormControl, Button} from 'react-bootstrap'
 import {LinkContainer} from 'react-router-bootstrap'
 const OurNavbar = ({handleClick, isLoggedIn, clientName}) => (
 <div>
@@ -25,7 +24,7 @@ const OurNavbar = ({handleClick, isLoggedIn, clientName}) => (
           
           <Nav className="justify-content-space-between">
        <Navbar.Text className="mr-2">
-       Signed in as: <LinkContainer to="/profile"><Link>{clientName}</Link></LinkContainer>
+       Signed in as: <LinkContainer to="/profile"><Nav.Link>{clientName}</Nav.Link></LinkContainer>
         </Navbar.Text>
           <Form inline>
           <FormControl type="text" placeholder="Search For Ticker" className="mr-sm-2" />

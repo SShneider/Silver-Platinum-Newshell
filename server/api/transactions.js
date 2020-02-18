@@ -61,7 +61,12 @@ router.post('/', async (req, res, next) => {
       })
       user.bankroll=(-transactionSum)
       user.save()
-      res.status(201).send('Success!')
+      const transactions = await Transaction.findAll({
+        where:{
+            userId: idValue
+        }
+    })
+      res.status(201).send(transactions)
     } catch (err) {
       next(err)
     }
