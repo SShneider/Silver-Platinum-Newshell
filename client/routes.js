@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {Login, Signup, UserProfile, AllUsers, UserUpdate} from './components'
+import {Login, Signup, UserProfile, AllUsers, UserUpdate, TransPort} from './components'
 import {me} from './store/index'
 
 /**
@@ -15,7 +15,6 @@ class Routes extends Component {
 
   render() {
     const {isLoggedIn} = this.props
-    console.log(this.props)
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
@@ -24,6 +23,8 @@ class Routes extends Component {
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
+            <Route path="/transactions" component = {TransPort}/>
+            <Route path="/portfolio" component = {TransPort}/>
             <Route path="/profile/update" component={UserUpdate}/>
             <Route path="/profile/:id/update" component={UserUpdate}/>
             <Route path="/profile/:id" component={UserProfile}/>  {/* A user will never see this, strictly for admin access */}

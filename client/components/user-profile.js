@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { findSingleUserThunk } from '../store/user'
 import {Card, Button, ListGroup, ListGroupItem} from 'react-bootstrap'
 class UserProfile extends React.Component {

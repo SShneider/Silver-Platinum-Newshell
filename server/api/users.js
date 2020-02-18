@@ -13,7 +13,7 @@ let idValue//either a query(if own profile) or the session user id(if checked by
 
 const verifyLoggedIn = async (req, res, next) => {
   if(!req.user || req.query.id && !req.user.admin){
-    res.status(401).send('Insufficient Rights')
+    return res.status(401).send('Insufficient Rights')
   }
   else {
     req.query.id ? idValue = req.query.id : idValue = req.user.id
@@ -52,7 +52,7 @@ router.get('/', async (req, res, next) => {
 })
 
 router.get('/all', async (req, res, next) => {
-	if(!req.user.admin) res.status(401).end() //not in middleware because no queries are sent
+	if(!req.user.admin) return res.status(401).end() //not in middleware because no queries are sent
 	try {
       const users = await User.findAll({
 				attributes: [
