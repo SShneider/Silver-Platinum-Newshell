@@ -6,11 +6,13 @@ const seed = require('../../script/seed')
 const session = require('supertest-session')
 const createUserObj = {email:"cody@puppybook.com", password:"Abcdefg4*", firstName:"Joh-n",
 lastName:"Joh-nny", userName:"Miracle", apt: "55B", city: "New Yok", houseNumber: "77C", street: "Ocean Ave.", zipcode: "11230", state: "NY", country: "St.Louis"}
+
 let testSession = null;
 let testSessionAdmin = null;
 let adminSession = null;
 let authorizedSession = null;
-describe('User routes', () => {
+
+xdescribe('User routes', () => {
 
   describe('Logged out users shouldnt be able to access', ()=>{
    
