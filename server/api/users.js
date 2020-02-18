@@ -2,7 +2,15 @@ const router = require('express').Router()
 const { User } = require('../db/models')
 
 module.exports = router
-let idValue
+
+let idValue//either a query(if own profile) or the session user id(if checked by admin)
+
+//logged out users have no access
+//logged in users can only access their own information
+//admins can access all the information
+//to mask multiple user pages admin-accessed pages are specified with queries
+//if query is sent by someone without admin rights it gets rejected
+
 const verifyLoggedIn = async (req, res, next) => {
   if(!req.user || req.query.id && !req.user.admin){
     res.status(401).send('Insufficient Rights')
@@ -12,6 +20,7 @@ const verifyLoggedIn = async (req, res, next) => {
     next()
   }
 }
+
 router.use(verifyLoggedIn)
 router.get('/', async (req, res, next) => {
 	try {
@@ -32,7 +41,8 @@ router.get('/', async (req, res, next) => {
         'zipcode',
         'state',
         'country',
-        'admin'
+		'admin',
+		'bankroll'
       ]
     })
 		res.json(user)
@@ -42,6 +52,7 @@ router.get('/', async (req, res, next) => {
 })
 
 router.get('/all', async (req, res, next) => {
+	if(!req.user.admin) res.status(401).end() //not in middleware because no queries are sent
 	try {
       const users = await User.findAll({
 				attributes: [
@@ -77,7 +88,7 @@ router.put('/', async (req, res, next) => {
 					},
 					{
 						where: { id: idValue },
-						individualHooks: true
+						individualHooks: true//salts the updated password, etc
 					}
 				)
 		res.json(user)
@@ -91,6 +102,7 @@ router.delete('/', async (req, res, next) => {
 			const destroyed = await User.destroy({
 				where: { id: idValue }
 			})
+			console.log(destroyed)
 			res.json(destroyed)
 	} catch (error) {
 		next(error)

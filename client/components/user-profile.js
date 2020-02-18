@@ -17,13 +17,7 @@ class UserProfile extends React.Component {
 	}
 	render() {
 		let ifAdmin
-		console.log(this.state)
 		if (this.props.user.loggedInUser) ifAdmin = this.props.user.loggedInUser.admin//checks if the user has admin priveleges 
-		
-		//console.log(ifAdmin)
-		// let id
-		// if (this.props.match) id = this.props.match.params.id
-
 		let displaybutton = 'none'
 		if (!this.props.islist) displaybutton = 'block' //if the component is used in the 
 		//allusers list, 'Go To User Profile' button is displayed. 

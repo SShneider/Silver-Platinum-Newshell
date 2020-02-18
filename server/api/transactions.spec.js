@@ -87,7 +87,7 @@ describe('transactionTests - api', ()=>{
     })//end transaction access - logged in - User
     
     describe('transaction access -logged in - admin', ()=>{
-        beforeEach( (done)=>{ //creates a session with a non-admin account
+        beforeEach( (done)=>{ //creates a session with an admin account
         testSessionAdmin = session(app)
         testSessionAdmin.post('/auth/login')
         .send({email: 'tom@email.com', password: 'Cd123456*'})

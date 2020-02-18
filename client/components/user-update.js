@@ -38,7 +38,7 @@ class UserUpdate extends React.Component {
 			this.props.findUser(this.props.match.params.id)
 			this.setState({ user: this.props.user})
 		} else if (this.props.loggedInUser.id) {
-			this.props.findUser(this.props.loggedInUser.id)
+			//this.props.findUser(this.props.loggedInUser.id)
 			this.setState({ user: this.props.loggedInUser })
 		}
 
@@ -85,7 +85,7 @@ class UserUpdate extends React.Component {
 	}
 	render() {
 		let userObj
-		if (this.props.user) userObj = this.props.user
+		if (this.props.user.id) userObj = this.props.user
 		else if (this.props.loggedInUser) userObj = this.props.loggedInUser
 		let {
 			email,
