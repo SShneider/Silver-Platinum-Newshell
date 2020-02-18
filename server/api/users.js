@@ -2,9 +2,17 @@ const router = require('express').Router()
 const { User } = require('../db/models')
 
 module.exports = router
-let idValue
+
+let idValue//either a query(if own profile) or the session user id(if checked by admin)
+
+//logged out users have no access
+//logged in users can only access their own information
+//admins can access all the information
+//to mask multiple user pages admin-accessed pages are specified with queries
+//if query is sent by someone without admin rights it gets rejected
+
 const verifyLoggedIn = async (req, res, next) => {
-  if(!req.user || req.query && !req.user.admin){
+  if(!req.user || req.query.id && !req.user.admin){
     res.status(401).send('Insufficient Rights')
   }
   else {
@@ -12,10 +20,10 @@ const verifyLoggedIn = async (req, res, next) => {
     next()
   }
 }
+
 router.use(verifyLoggedIn)
 router.get('/', async (req, res, next) => {
 	try {
-    console.log(req.params)
     const user = await User.findAll({
       where: {
         id: idValue
@@ -33,17 +41,18 @@ router.get('/', async (req, res, next) => {
         'zipcode',
         'state',
         'country',
-        'admin'
+		'admin',
+		'bankroll'
       ]
     })
-    //console.log(user)
-			res.json(user)
+		res.json(user)
 	} catch (error) {
 		next(error)
 	}
 })
 
 router.get('/all', async (req, res, next) => {
+	if(!req.user.admin) res.status(401).end() //not in middleware because no queries are sent
 	try {
       const users = await User.findAll({
 				attributes: [
@@ -63,11 +72,10 @@ router.get('/all', async (req, res, next) => {
 
 router.put('/', async (req, res, next) => {
 	try {
-				await User.update(
+			let user = await User.update(
 					{
 						email: req.body.email,
 						password: req.body.password,
-						userName: req.body.userName,
 						firstName: req.body.firstName,
 						lastName: req.body.lastName,
 						apt: req.body.apt,
@@ -75,16 +83,17 @@ router.put('/', async (req, res, next) => {
 						houseNumber: req.body.houseNumber,
 						zipcode: req.body.zipcode,
 						state: req.body.state,
-						country: req.body.country
+						country: req.body.country,
+						admin: req.body.admin
 					},
 					{
-						where: { id: req.params.id },
-						individualHooks: true
+						where: { id: idValue },
+						individualHooks: true//salts the updated password, etc
 					}
 				)
 		res.json(user)
 	} catch (error) {
-		res.status(401).send(error.message)
+		next(error)
 	}
 })
 
@@ -93,6 +102,7 @@ router.delete('/', async (req, res, next) => {
 			const destroyed = await User.destroy({
 				where: { id: idValue }
 			})
+			console.log(destroyed)
 			res.json(destroyed)
 	} catch (error) {
 		next(error)

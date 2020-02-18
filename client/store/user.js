@@ -36,15 +36,15 @@ const removeAsAdmin = () => ({ type: REMOVE_AS_ADMIN })
  */
 export const deleteUserThunk = (id, admin) => async dispatch => {
 	try {
-		await axios.delete(`/api/users/${id}`)
+		let payload = {}
+		if(admin.admin) payload = {params: {id: id}}
+		await axios.delete(`/api/users/`, payload)
 		if (!admin.admin) {
 			dispatch(removeUser())
-
 			history.push('/login')
 		} else {
-			//dispatch(findSingleUser(admin.id))
 			dispatch(removeAsAdmin())
-			history.push(`/users/${admin.id}`)
+			history.push(`/profile`)
 		}
 	} catch (err) {
 		console.error(err)
@@ -52,17 +52,15 @@ export const deleteUserThunk = (id, admin) => async dispatch => {
 }
 
 export const updateUserThunk = user => async dispatch => {
-	let res
+	
 	try {
-		let userId = 0
-		if (user.id) userId = user.id
-		res = await axios.put(`/api/users/${userId}`, user)
+		res = await axios.put(`/api/users/`, user, {params:{id: user.id}})
 	} catch (updateError) {
 		return dispatch(updateUser({ error: updateError }))
 	}
 	try {
 		dispatch(updateUser(res.data))
-		history.push(`/users/${user.id}`)
+		history.push(`/profile`)
 	} catch (error) {
 		console.error(error)
 	}
@@ -126,17 +124,20 @@ export const logout = () => async dispatch => {
 export default function(state = initialState, action) {
 	switch (action.type) {
 		case GET_USER:
+			
 			return { ...state, loggedInUser: action.user }
 		case REMOVE_USER:
+			
 			return {
 				...state,
 				requestedUser: initialState.requestedUser,
 				loggedInUser: initialState.loggedInUser
 			}
 		case REMOVE_AS_ADMIN:
+			
 			return {
 				...state,
-				user: initialState.user
+				requestedUser: initialState.requestedUser
 			}
 		case FIND_SINGLE_USER:
 			return { ...state, requestedUser: action.user }

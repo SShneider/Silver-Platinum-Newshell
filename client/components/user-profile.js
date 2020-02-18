@@ -17,13 +17,7 @@ class UserProfile extends React.Component {
 	}
 	render() {
 		let ifAdmin
-		console.log(this.state)
 		if (this.props.user.loggedInUser) ifAdmin = this.props.user.loggedInUser.admin//checks if the user has admin priveleges 
-		
-		//console.log(ifAdmin)
-		// let id
-		// if (this.props.match) id = this.props.match.params.id
-
 		let displaybutton = 'none'
 		if (!this.props.islist) displaybutton = 'block' //if the component is used in the 
 		//allusers list, 'Go To User Profile' button is displayed. 
@@ -31,29 +25,33 @@ class UserProfile extends React.Component {
 			display: displaybutton
 		}
 		let displayAdmin = 'none'
-		if (ifAdmin) displayAdmin = 'block' //displays admin panel if the user logged in has
-		//admin priveleges 
-		const adminPanel = {
-			display: displayAdmin
-		}
+		let updateLink = `/profile/update` //masks the fact that other users can be accessed
+	
 		let uservalue
 		if (this.props.user.requestedUser) uservalue = this.props.user.requestedUser
 		else uservalue = this.props.user //checks if the user requested their own profile
 		//or if admin requested someone elses
-		const { username, firstName, lastName, address, email } = uservalue
+		if (ifAdmin) {
+			displayAdmin = 'block' //displays admin panel if the user logged in has
+			updateLink = `/profile/${uservalue.id}/update`} 
+		//admin priveleges 
+		const adminPanel = {
+			display: displayAdmin
+		}
+		const { userName, firstName, lastName, address, email } = uservalue
 		return (
 				<Card bg="info" text="white" className="mr-auto ml-auto mt-3 w-25">
 					<Card.Header><h3>Welcome, {firstName} {lastName}</h3></Card.Header>
 					<Card.Body className="pl-3 pb-3">
 						<ListGroup>
-							<ListGroupItem variant="info">Username: {username}</ListGroupItem>
+						
 							<ListGroupItem variant="info">Name: {firstName} {lastName}</ListGroupItem>
 							<ListGroupItem variant="info">Address: {address}</ListGroupItem>
 							<ListGroupItem variant="info">Email: {email}</ListGroupItem>
 						</ListGroup>
 						<div style={displayStyle}>
 					<Card.Link className="pt-3 pb-3 d-flex justify-content-center"
-						href={`/users/${uservalue.id}/update`}
+						href={updateLink}
 					>
 						<Button variant="primary">Edit Info</Button>
 					</Card.Link></div>

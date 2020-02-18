@@ -3,27 +3,29 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store/index'
-import {Navbar, Nav, Form, FormControl, Button} from 'react-bootstrap'
+import {Navbar, Nav, Form, FormControl, Button, NavItem} from 'react-bootstrap'
+import {LinkContainer} from 'react-router-bootstrap'
 const OurNavbar = ({handleClick, isLoggedIn, clientName}) => (
 <div>
       {isLoggedIn ? (
         
     <Navbar bg="dark" variant="dark" expand="lg">
-    <Navbar.Brand href="/profile">Silver Platinum Stocks</Navbar.Brand>
+    <LinkContainer to = "/profile"><Navbar.Brand>Silver Platinum Stocks</Navbar.Brand></LinkContainer>
     
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           {/* The navbar will show these links after you log in */}
-          <Nav.Link href="/portfolio">Portfolio</Nav.Link>
-          <Nav.Link href="/transactions">Transactions</Nav.Link>
+          
+          <LinkContainer to="/portfolio"><Nav.Link>Portfolio</Nav.Link></LinkContainer>
+          <LinkContainer to="/transactions"><Nav.Link>Transactions</Nav.Link></LinkContainer>
           <Nav.Link href="#"  onClick={handleClick}>Logout</Nav.Link>
           
           </Nav>
           
           <Nav className="justify-content-space-between">
        <Navbar.Text className="mr-2">
-       Signed in as: <a href="/profile">{clientName} </a>
+       Signed in as: <LinkContainer to="/profile"><Link>{clientName}</Link></LinkContainer>
         </Navbar.Text>
           <Form inline>
           <FormControl type="text" placeholder="Search For Ticker" className="mr-sm-2" />
@@ -40,8 +42,8 @@ const OurNavbar = ({handleClick, isLoggedIn, clientName}) => (
               <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           {/* The navbar will show these links before you log in */}
-          <Nav.Link href="/login">Login</Nav.Link>
-          <Nav.Link href="/signup">Sign Up</Nav.Link>
+          <LinkContainer to="/login"><Nav.Link>Login</Nav.Link></LinkContainer>
+        <LinkContainer to="/signup"><Nav.Link>Sign Up</Nav.Link></LinkContainer>
           </Nav>
           </Navbar.Collapse>
         </Navbar>

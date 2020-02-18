@@ -187,7 +187,7 @@ const User = db.define(
 					}
 				},
 				is: {
-					args: /^[a-z\.]*$/i,
+					args: /^[a-z\.\ ]*$/i,
 					msg: "Must be a valid country"
 				}
 			}
