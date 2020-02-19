@@ -28,7 +28,7 @@ xdescribe('transactionTests', ()=>{
         }catch(err){
             console.log(err)
         }
-        expect(Date(createdTransaction.priceAtTransaction)).to.be.equal(Date(Date.now()))
+        expect(Date.parse(createdTransaction.priceAtTransaction)).to.be.equal(Date.parse(Date.now()))
     })
     it('rejects quantities below 0', async()=>{
         try{

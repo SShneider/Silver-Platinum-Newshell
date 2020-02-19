@@ -10,7 +10,7 @@ const ADD_PURCHASE = "ADD_PURCHASE"
  * INITIAL STATE
  */
 const initialTransState = {
-	transactions: [],
+	transactions: [{}],
 }
 /**
  * ACTION CREATORS

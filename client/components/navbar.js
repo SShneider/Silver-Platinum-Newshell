@@ -9,15 +9,15 @@ const OurNavbar = ({handleClick, isLoggedIn, clientName}) => (
       {isLoggedIn ? (
         
     <Navbar bg="dark" variant="dark" expand="lg">
-    <LinkContainer to = "/profile"><Navbar.Brand>Silver Platinum Stocks</Navbar.Brand></LinkContainer>
+    <LinkContainer to = {{pathname:"/portfolio", query:{type:'portfolio'}}}><Navbar.Brand>Silver Platinum Stocks</Navbar.Brand></LinkContainer>
     
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           {/* The navbar will show these links after you log in */}
           
-          <LinkContainer to="/portfolio"><Nav.Link>Portfolio</Nav.Link></LinkContainer>
-          <LinkContainer to="/transactions"><Nav.Link>Transactions</Nav.Link></LinkContainer>
+          <LinkContainer to={{pathname:"/portfolio", query:{type:'portfolio'}}}><Nav.Link>Portfolio</Nav.Link></LinkContainer>
+          <LinkContainer to={{pathname:"/transactions", query:{type:'transactions'}}}><Nav.Link>Transactions</Nav.Link></LinkContainer>
           <Nav.Link href="#"  onClick={handleClick}>Logout</Nav.Link>
           
           </Nav>
