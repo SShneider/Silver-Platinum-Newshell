@@ -16,11 +16,11 @@ const AuthForm = props => {
       (<Form.Group>
         <Form.Group controlId = "firstName">
           <Form.Label>First Name</Form.Label>
-          <Form.Control type="text-muted" placeholder ="Enter your First Name"/>
+          <Form.Control type="text" placeholder ="Enter your First Name"/>
         </Form.Group>
         <Form.Group controlId = "lastName">
           <Form.Label>Last Name</Form.Label>
-          <Form.Control type="text-muted" placeholder ="Enter your Last Name"/>
+          <Form.Control type="text" placeholder ="Enter your Last Name"/>
         </Form.Group>
         </Form.Group>
         ) :(<div></div>)}
@@ -53,13 +53,6 @@ const AuthForm = props => {
   )
 }
 
-/**
- * CONTAINER
- *   Note that we have two different sets of 'mapStateToProps' functions -
- *   one for Login, and one for Signup. However, they share the same 'mapDispatchToProps'
- *   function, and share the same Component. This is a good example of how we
- *   can stay DRY with interfaces that are very similar to each other!
- */
 const mapLogin = state => {
 	return {
 		name: 'login',
@@ -81,8 +74,9 @@ const mapDispatch = dispatch => {
   return {
     handleSubmit(evt) {
       evt.preventDefault()
+    
       const formName =evt.target.name
-      const formInput = {   
+      let formInput = {   
       email:evt.target.email.value,
       password:evt.target.password.value,
       }

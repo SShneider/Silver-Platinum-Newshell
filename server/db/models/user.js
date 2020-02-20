@@ -206,10 +206,7 @@ const User = db.define(
 		},
 		bankroll: {
 			type: Sequelize.INTEGER,
-			defaultValue: 5000,
-			set(value){
-				this.setDataValue('bankroll', this.bankroll+value)
-			}
+			defaultValue: 500000,
 		},
 		admin: {
 			type: Sequelize.BOOLEAN,

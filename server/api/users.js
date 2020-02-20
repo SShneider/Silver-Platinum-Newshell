@@ -102,7 +102,6 @@ router.delete('/', async (req, res, next) => {
 			const destroyed = await User.destroy({
 				where: { id: idValue }
 			})
-			console.log(destroyed)
 			res.json(destroyed)
 	} catch (error) {
 		next(error)

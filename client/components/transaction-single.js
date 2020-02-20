@@ -26,9 +26,10 @@ export default function SingleTransaction(props){
         <td>{props.trans.ticker}</td>
         <td className={priceTextColor}>{roundedPrice}</td>
         <td>{props.trans.quantity}</td>
-        <td>{(roundedPrice*props.trans.quantity).toString()}</td>
+        <td>{(roundedPrice*props.trans.quantity).toFixed(2)}</td>
         {props.isPortfolio ? null : <td>{boughtOrSold}</td>}
         {props.isPortfolio ? null : <td>{readableDate.split('GMT')[0]}</td>}
         </tr>
     )
 }
+

@@ -30,7 +30,7 @@ describe('transactionTests - api', ()=>{
         })
         it('blocks add transaction if not logged in', async ()=>{
             await request(app).post('/api/transactions/')
-                .send({order:[{ticker: 'AMZN', price: 2000, quantity: 1}]})
+                .send({order:[{ticker: 'AMZN', priceAtTransaction: 2000, quantity: 1}]})
                 .expect(401)
         })
     })//end transaction access - not logged in
@@ -73,7 +73,7 @@ describe('transactionTests - api', ()=>{
             it('Posts user transactions and subtracts from bankroll',  function(done){
                 authorizedSession
                     .post('/api/transactions')
-                    .send({order:[{ticker: 'AMZN', price: 2000, quantity: 1}]})
+                    .send({order:[{ticker: 'AMZN', priceAtTransaction: 2000, quantity: '1'}]})
                     .expect(201)
                     .end((function (err) {
                         if (err) return done(err);
@@ -90,7 +90,7 @@ describe('transactionTests - api', ()=>{
                                 .expect(200)
                                 .end((function (err, res) {
                                     if (err) return done(err);
-                                    expect(res.body[0].bankroll).to.be.equal(3000)
+                                    expect(res.body[0].bankroll).to.be.equal(300000)
                                     done()
                             }));
                         }));
@@ -99,7 +99,7 @@ describe('transactionTests - api', ()=>{
             it('Doesnt post transaction if sum>bankroll',  function(done){
                 authorizedSession
                     .post('/api/transactions')
-                    .send({order:[{ticker: 'AMZN', price: 2000, quantity: 1}, {ticker: 'FAKE', price: 10000, quantity: 1}]})
+                    .send({order:[{ticker: 'AMZN', priceAtTransaction: 2000, quantity: 1}, {ticker: 'FAKE', priceAtTransaction: 10000, quantity: 1}]})
                     .expect(406)
                     .end((function (err) {
                         if (err) return done(err);
@@ -173,7 +173,7 @@ describe('transactionTests - api', ()=>{
                 adminSession
                     .post('/api/transactions')
                     .query({id:1})
-                    .send({order:[{ticker: 'AMZN', price: 2000, quantity: 1}]})
+                    .send({order:[{ticker: 'AMZN', priceAtTransaction: 2000, quantity: 1}]})
                     .expect(401)
                     .end((function (err) {
                         if (err) return done(err);
@@ -192,7 +192,8 @@ describe('transactionTests - api', ()=>{
                                 .expect(200)
                                 .end((function (err, res) {
                                     if (err) return done(err);
-                                    expect(res.body[0].bankroll).to.be.equal(3000)
+                                    console.log(res.body[0])
+                                    expect(res.body[0].bankroll).to.be.equal(300000)
                                     done()
                             }));
                         }));

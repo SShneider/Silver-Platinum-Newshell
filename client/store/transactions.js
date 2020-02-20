@@ -1,5 +1,6 @@
 import axios from 'axios'
 import history from '../history'
+import {me} from './user'
 require("../../secrets");
 /**
  * ACTION TYPES
@@ -21,7 +22,6 @@ const initialTransState = {
  */
 const getAllTrans = transactions => ({type: GET_ALL_TRANS, transactions})
 const getUserTrans = transactions => ({type: GET_USER_TRANS, transactions})
-const addPurchase = transactions => ({type: ADD_PURCHASE, transactions})
 const iexUpdate = apiPayload => ({type: GET_IEX_UPDATE, apiPayload})
 /**
  * THUNK CREATORS
@@ -29,7 +29,8 @@ const iexUpdate = apiPayload => ({type: GET_IEX_UPDATE, apiPayload})
 export const iexUpdateThunk = (stocksToUpdate) => async dispatch => {
 	try{
 		let sendTickers = Object.keys(stocksToUpdate).join().toLowerCase()
-		const { data } = await axios.get(`https://cloud.iexapis.com/stable/stock/market/batch?symbols=${sendTickers}&types=quote&token=${process.env.IEX_API_TOKEN}`)
+		const { data } = await axios.get('/api/stocks', {params:{tickers: sendTickers}})
+		console.log('in iex update', data)
 		dispatch(iexUpdate(data))
 	}catch(error){
 		console.error(error)
@@ -56,10 +57,19 @@ export const getUserTransThunk = (id) => async dispatch => {
 
 export const addPurchaseThunk = (order) => async dispatch => {
 	try {
-		const { data } = await axios.post('/api/transactions/', order, {params: {id:user}})
-		dispatch(addPurchase(data))
+		
+		const { data } = await axios.post('/api/transactions/', {order})
+		let sendTickers = ""
+		Object.values(data).forEach(stock => {
+			sendTickers+=(stock.ticker+',')
+		})
+		const res = await axios.get('/api/stocks', {params:{tickers: sendTickers}})
+		dispatch(getUserTrans(data))//updates state.transactions
+		dispatch(iexUpdate(res.data))//updates state.portfolio there could be a better way
+		if(res) dispatch(me())
+		// 
 	} catch (error) {
-		dispatch(addPurchase({error}))
+		dispatch(iexUpdate({error}))
 	}
 }
 //end thunks
@@ -87,12 +97,13 @@ export const addPurchaseThunk = (order) => async dispatch => {
 				}
 			  })
 			return {...state, transactions: output, portfolio: incPortfolio}
-		case ADD_PURCHASE:
-			return {...state, transactions: output}
 		case GET_IEX_UPDATE:
 			const stateToUpdate = {...state.portfolio}
 			for (let key in action.apiPayload) {
 				let stock = action.apiPayload[key]
+				if(!stateToUpdate[stock.quote.symbol]){
+					stateToUpdate[stock.quote.symbol] = {ticker: stock.quote.symbol, priceAtTransaction: 0, oldprice: 0}
+				}
 				stateToUpdate[stock.quote.symbol].priceAtTransaction = stock.quote.latestPrice
 				stateToUpdate[stock.quote.symbol].oldprice = stock.quote.previousClose
 				}

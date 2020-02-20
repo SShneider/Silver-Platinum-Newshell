@@ -8,7 +8,7 @@ const User = db.model('user')
 const codyObject = {firstName: "cody", lastName: "pumpkin", email: "cody@codygoogle.com", password: "Abcdefgh4*"}
 const codysEmail = 'cody@puppybook.com'
 const codyPW = "Abcdefgh4*"
-xdescribe('Authorization page', () => {
+describe('Authorization page', () => {
   beforeEach(() => {
     return db.sync({force: true})
   })
@@ -40,7 +40,7 @@ xdescribe('Authorization page', () => {
           .send({...codyObject, admin: true, bankroll: 10000})
           .expect(200)
         expect(res.body.admin).to.be.equal(false)
-        expect(res.body.bankroll).to.be.equal(5000)
+        expect(res.body.bankroll).to.be.equal(500000)
     })
     it('Does not expose user password', async() =>{
         const res = await request(app)

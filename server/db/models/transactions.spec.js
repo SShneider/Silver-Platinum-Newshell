@@ -3,7 +3,7 @@ const {expect} = require('chai')
 const db = require('../index')
 const Transaction = db.model('transaction')
 const User = db.model('user')
-xdescribe('transactionTests', ()=>{
+describe('transactionTests', ()=>{
     let cody
     beforeEach(() => {
         return db.sync({force: true})
@@ -28,7 +28,7 @@ xdescribe('transactionTests', ()=>{
         }catch(err){
             console.log(err)
         }
-        expect(Date.parse(createdTransaction.priceAtTransaction)).to.be.equal(Date.parse(Date.now()))
+        expect(Math.floor((Date.parse(createdTransaction.dateOfTransaction))/1000)).to.be.equal(Math.floor(Date.now()/1000))
     })
     it('rejects quantities below 0', async()=>{
         try{
