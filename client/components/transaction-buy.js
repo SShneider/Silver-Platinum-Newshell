@@ -1,19 +1,36 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {addPurchaseThunk} from '../store/transactions'
-import {Table, Form, Button} from 'react-bootstrap'
+import {me} from '../store/user'
+import {Table, Form, Button, Alert} from 'react-bootstrap'
 
 class BuyStock extends Component{
     constructor(){
         super()
         this.state = {
-            quantity: 0
+            quantity: 1,
+            warningVisibility: false
         }
     }
     
     handleOnChange = (event) =>{
         event.preventDefault()
-        this.setState({quantity:event.target.value})
+        let quantityIn = event.target.value
+        this.setState({quantity:quantityIn})
+        if(quantityIn<1 ||this.props.balance<(this.props.trans.priceAtTransaction*quantityIn)) this.setState({warningVisibility: true})
+        else{
+        this.setState({warningVisibility: false})
+        }
+    }
+    handlePurchase =  (event) =>{
+        if(this.props.balance<(this.props.trans.priceAtTransaction*this.state.quantity) || this.props.quantity<1){
+            this.setState({warningVisibility: true})
+        }else{ this.props.makePurchase([{ticker: this.props.trans.ticker, 
+                priceAtTransaction: this.props.trans.priceAtTransaction,
+                quantity: Number(this.state.quantity)
+                }])
+               
+        }
     }
     render(){
         let textColor = "text-white";
@@ -49,13 +66,11 @@ class BuyStock extends Component{
 						onChange={this.handleOnChange}
 						pattern="[0-9]"
 					/>
+                    {this.state.warningVisibility ? <Alert variant="danger">Insufficient funds!</Alert> : null }
 					</td>
                     <td>{(roundedPrice*this.state.quantity).toFixed(2)}</td>
                     <td><Button 
-                    onClick={() => this.props.makePurchase([{ticker: this.props.trans.ticker, 
-                        priceAtTransaction: this.props.trans.priceAtTransaction,
-                        quantity: Number(this.state.quantity)
-                        }])}
+                    onClick={() => this.handlePurchase(event)}
                     variant="success" type="submit" className="rounded-0 border-0 w-25">Buy!</Button></td>
                 </tr>
             </tbody>
@@ -70,6 +85,9 @@ const mapDispatch = dispatch => {
     return {
         makePurchase(stockIn){
             dispatch(addPurchaseThunk(stockIn))
+        },
+        updateBankroll(){
+            dispatch(me())
         }
     }
 }

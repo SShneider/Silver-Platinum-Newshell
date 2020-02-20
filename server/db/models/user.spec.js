@@ -12,7 +12,7 @@ const illegalPwResponses = ["Password must include at least one number", "Passwo
 "Password must be between 6 and 15 characters"]
 const addressCheck = ["country", "apt", "houseNumber", "street", "zipcode", "city", "state"]
 //arrays of variables to test end
-xdescribe('User model', () => {
+describe('User model', () => {
   beforeEach(() => {
     return db.sync({force: true})
   })
@@ -131,7 +131,7 @@ xdescribe('User model', () => {
         password: 'Cd123456*'
       })})
     it("sets the bankroll on create", () =>{
-      expect(cody.bankroll).to.be.equal(5000)
+      expect(cody.bankroll).to.be.equal(500000)
     })
    })
 }) 

@@ -101,7 +101,7 @@ export const auth = (formData, method) => async dispatch => {
 
   try {
     dispatch(getUser(res.data ))
-    history.push('/home')
+    history.push('/portfolio')
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
   }

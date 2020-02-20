@@ -205,8 +205,8 @@ const User = db.define(
 			}
 		},
 		bankroll: {
-			type: Sequelize.DECIMAL,
-			defaultValue: 5000,
+			type: Sequelize.INTEGER,
+			defaultValue: 500000,
 		},
 		admin: {
 			type: Sequelize.BOOLEAN,
