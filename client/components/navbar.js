@@ -29,7 +29,7 @@ const OurNavbar = ({handleClick, isLoggedIn, clientName, bankroll}) => (
         </Navbar.Text>
          
          <NavItem  className="text-success p-3 pt-4">
-         Balance: {bankroll}
+         Balance: {parseFloat(bankroll).toFixed(2)}
           </NavItem>
          
         </Nav>

@@ -27,7 +27,7 @@ class TransactionPortfolio extends Component{
     }
     findTicker = (event) =>{
         event.preventDefault()
-        let tickerToFind = event.target.elements[0].value
+        let tickerToFind = event.target.elements[0].value.toUpperCase()
         let newPortfolioObject = {...this.props.portfolio}
         newPortfolioObject[tickerToFind] = {priceAtTransaction: 0, oldprice: 0}
         this.setState({foundTicker: tickerToFind.toString()})
@@ -96,7 +96,7 @@ const mapState = (state) =>{
            allTransactions: state.transState.transactions, 
            portfolio: state.transState.portfolio,
            isMarketOpen: state.transState.isMarketOpen,
-           balance: state.userState.loggedInUser.balance
+           balance: state.userState.loggedInUser.bankroll
        }
 }
 

@@ -21,7 +21,7 @@ const initialTransState = {
  */
 const getAllTrans = transactions => ({type: GET_ALL_TRANS, transactions})
 const getUserTrans = transactions => ({type: GET_USER_TRANS, transactions})
-const addPurchase = transactions => ({type: ADD_PURCHASE, transactions})
+//const addPurchase = transactions => ({type: ADD_PURCHASE, transactions})
 const iexUpdate = apiPayload => ({type: GET_IEX_UPDATE, apiPayload})
 /**
  * THUNK CREATORS
@@ -56,10 +56,18 @@ export const getUserTransThunk = (id) => async dispatch => {
 
 export const addPurchaseThunk = (order) => async dispatch => {
 	try {
-		const { data } = await axios.post('/api/transactions/', order, {params: {id:user}})
-		dispatch(addPurchase(data))
+		
+		const { data } = await axios.post('/api/transactions/', {order})
+		let sendTickers = ""
+		Object.values(data).forEach(stock => {
+			sendTickers+=(stock.ticker+',')
+		})
+		const res = await axios.get(`https://cloud.iexapis.com/stable/stock/market/batch?symbols=${sendTickers}&types=quote&token=${process.env.IEX_API_TOKEN}`)
+		dispatch(getUserTrans(data))
+		dispatch(iexUpdate(res.data))
+		// 
 	} catch (error) {
-		dispatch(addPurchase({error}))
+		dispatch(iexUpdate({error}))
 	}
 }
 //end thunks
@@ -87,8 +95,8 @@ export const addPurchaseThunk = (order) => async dispatch => {
 				}
 			  })
 			return {...state, transactions: output, portfolio: incPortfolio}
-		case ADD_PURCHASE:
-			return {...state, transactions: output}
+		// case ADD_PURCHASE:
+		// 	return {...state, transactions: output}
 		case GET_IEX_UPDATE:
 			const stateToUpdate = {...state.portfolio}
 			for (let key in action.apiPayload) {
