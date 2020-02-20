@@ -2,34 +2,36 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {logout} from '../store/index'
-import {Navbar, Nav, Form, FormControl, Button} from 'react-bootstrap'
+import {Navbar, Nav, Form, FormControl, Button, NavItem} from 'react-bootstrap'
 import {LinkContainer} from 'react-router-bootstrap'
-const OurNavbar = ({handleClick, isLoggedIn, clientName}) => (
+const OurNavbar = ({handleClick, isLoggedIn, clientName, bankroll}) => (
 <div>
       {isLoggedIn ? (
         
     <Navbar bg="dark" variant="dark" expand="lg">
-    <LinkContainer to = "/profile"><Navbar.Brand>Silver Platinum Stocks</Navbar.Brand></LinkContainer>
+    <LinkContainer to = {{pathname:"/portfolio", query:{type:'portfolio'}}}><Navbar.Brand>Silver Platinum Stocks</Navbar.Brand></LinkContainer>
     
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           {/* The navbar will show these links after you log in */}
           
-          <LinkContainer to="/portfolio"><Nav.Link>Portfolio</Nav.Link></LinkContainer>
-          <LinkContainer to="/transactions"><Nav.Link>Transactions</Nav.Link></LinkContainer>
+          <LinkContainer to={{pathname:"/portfolio", query:{type:'portfolio'}}}><Nav.Link>Portfolio</Nav.Link></LinkContainer>
+          <LinkContainer to={{pathname:"/transactions", query:{type:'transactions'}}}><Nav.Link>Transactions</Nav.Link></LinkContainer>
           <Nav.Link href="#"  onClick={handleClick}>Logout</Nav.Link>
           
           </Nav>
           
-          <Nav className="justify-content-space-between">
-       <Navbar.Text className="mr-2">
-       Signed in as: <LinkContainer to="/profile"><Nav.Link>{clientName}</Nav.Link></LinkContainer>
+          <Nav className="ml-auto h-100">
+          <Navbar.Text className="pr-2 mr-1">
+           Signed in as: 
+           <LinkContainer to="/profile" ><Nav.Link>{clientName}</Nav.Link></LinkContainer>
         </Navbar.Text>
-          <Form inline>
-          <FormControl type="text" placeholder="Search For Ticker" className="mr-sm-2" />
-          <Button variant="outline-light">Search</Button>
-        </Form>
+         
+         <NavItem  className="text-success p-3 pt-4">
+         Balance: {bankroll}
+          </NavItem>
+         
         </Nav>
         </Navbar.Collapse>
         </Navbar>
@@ -57,8 +59,9 @@ const OurNavbar = ({handleClick, isLoggedIn, clientName}) => (
  */
 const mapState = state => {
   return {
-    isLoggedIn: !!state.userState.loggedInUser.id, // || !!state.userState.requestedUser.admin,
-    clientName: `${state.userState.loggedInUser.firstName} ${state.userState.loggedInUser.lastName}` 
+    isLoggedIn: !!state.userState.loggedInUser.id,
+    clientName: `${state.userState.loggedInUser.firstName} ${state.userState.loggedInUser.lastName}`,
+    bankroll: state.userState.loggedInUser.bankroll
   }
 }
 

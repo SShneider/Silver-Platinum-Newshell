@@ -39,26 +39,26 @@ class UserProfile extends React.Component {
 		}
 		const { userName, firstName, lastName, address, email } = uservalue
 		return (
-				<Card bg="info" text="white" className="mr-auto ml-auto mt-3 w-25">
-					<Card.Header><h3>Welcome, {firstName} {lastName}</h3></Card.Header>
+				<Card bg="dark" text="white" className="ml-auto mr-auto mt-3 w-75">
+					<Card.Header><h3>Welcome back, {firstName} {lastName}</h3></Card.Header>
 					<Card.Body className="pl-3 pb-3">
-						<ListGroup>
+						<ListGroup className="mr-auto ml-auto w-50">
 						
-							<ListGroupItem variant="info">Name: {firstName} {lastName}</ListGroupItem>
-							<ListGroupItem variant="info">Address: {address}</ListGroupItem>
-							<ListGroupItem variant="info">Email: {email}</ListGroupItem>
+							<ListGroupItem variant="secondary">Name: {firstName} {lastName}</ListGroupItem>
+							<ListGroupItem variant="secondary">Address: {address}</ListGroupItem>
+							<ListGroupItem variant="secondary">Email: {email}</ListGroupItem>
 						</ListGroup>
 						<div style={displayStyle}>
 					<Card.Link className="pt-3 pb-3 d-flex justify-content-center"
 						href={updateLink}
 					>
-						<Button variant="primary">Edit Info</Button>
+						<Button variant="light">Edit Info</Button>
 					</Card.Link></div>
 					<div style={adminPanel}>
 					<Card.Title className="text-center" >Admin Panel</Card.Title>
 					<Card.Body className="d-flex justify-content-center">
-					<Card.Link href="/users"><Button variant="primary">All Users</Button></Card.Link>
-					<Card.Link href="/products"><Button variant="primary">All Transactions</Button></Card.Link>
+					<Card.Link href="/users"><Button variant="light">All Users</Button></Card.Link>
+					<Card.Link href="/products"><Button variant="light">All Transactions</Button></Card.Link>
 					</Card.Body></div>
 				</Card.Body>
 				</Card>
