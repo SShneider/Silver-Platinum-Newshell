@@ -19,10 +19,10 @@
 * User profile:
 ![Image of User Profile](/ReadmeImages/userprofile.png)
     * Editable and Deletable
-    ![Image of Update user](/ReadmeImages/accountfeatures.png)
+    ![Image of Update user](/ReadmeImages/accountfeatures.PNG)
     * Admin access
     ![Image of Admin panel](/ReadmeImages/admin.png)
-    (Can terminate and update users; All Transactions WIP)
+    (Can terminate and update users; All Transactions WIP, admin account information in seed file)
 
 ## Technologies:
 
