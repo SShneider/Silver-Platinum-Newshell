@@ -2,8 +2,11 @@ import React from 'react'
 
 export default function SingleTransaction(props){
     let textColor = "text-white";
-    let boughtOrSold = 'Bought'
+    let boughtOrSold = 'Bought';
+    let priceTextColor = "text-white";
     let readableDate;
+    let roundedPrice = props.trans.priceAtTransaction.toFixed(2)
+   
     if(!props.isPortfolio){
         readableDate= new Date(props.trans.dateOfTransaction).toUTCString()
         if(props.trans.sold){
@@ -11,14 +14,19 @@ export default function SingleTransaction(props){
             boughtOrSold = "Sold"
         }
         else textColor="text-success"
+        priceTextColor = textColor
+    }else{
+        let roundedPriceOpen = props.trans.oldprice.toFixed(2)
+        roundedPrice > roundedPriceOpen ? priceTextColor = "text-success" : priceTextColor ="text-danger"
+        if(roundedPrice === roundedPriceOpen) priceTextColor = "text-muted"
     } 
     
     return(
         <tr className={textColor}>
         <td>{props.trans.ticker}</td>
-        <td>{props.trans.priceAtTransaction}</td>
+        <td className={priceTextColor}>{roundedPrice}</td>
         <td>{props.trans.quantity}</td>
-        <td>{(props.trans.priceAtTransaction*props.trans.quantity).toString()}</td>
+        <td>{(roundedPrice*props.trans.quantity).toString()}</td>
         {props.isPortfolio ? null : <td>{boughtOrSold}</td>}
         {props.isPortfolio ? null : <td>{readableDate.split('GMT')[0]}</td>}
         </tr>
