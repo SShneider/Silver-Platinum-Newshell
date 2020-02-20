@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {logout} from '../store/index'
-import {Navbar, Nav, Form, FormControl, Button, NavItem} from 'react-bootstrap'
+import {Navbar, Nav, NavItem} from 'react-bootstrap'
 import {LinkContainer} from 'react-router-bootstrap'
 const OurNavbar = ({handleClick, isLoggedIn, clientName, bankroll}) => (
 <div>

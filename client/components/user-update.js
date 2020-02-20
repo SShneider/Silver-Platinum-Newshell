@@ -38,17 +38,8 @@ class UserUpdate extends React.Component {
 			this.props.findUser(this.props.match.params.id)
 			this.setState({ user: this.props.user})
 		} else if (this.props.loggedInUser.id) {
-			//this.props.findUser(this.props.loggedInUser.id)
 			this.setState({ user: this.props.loggedInUser })
 		}
-
-		// if (this.props.match && this.props.match.params.id) {
-		// 	this.props.findUser(this.props.match.params.id)
-		// 	if(this.props.user) this.setState({ user: this.props.user })
-		// } else if (this.props.loggedInUser.id) {
-		// 	//this.props.findUser(this.props.loggedInUser.id)
-		// 	this.setState({ user: this.props.loggedInUser })
-		// }
 	}
 
 	handleOnDelete(id, admin) {
