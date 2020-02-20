@@ -9,7 +9,7 @@
 ![Image of the buy](/ReadmeImages/buy.png)
     * Stock information acquired from IEX Api
 * Portfolio:
-[Image of the portfolio]
+![Image of the portfolio](/ReadmeImages/portfolio.png)
   * includes real time updating(well, every 50 seconds for the sake of API calls)
   
 * Transactions:
