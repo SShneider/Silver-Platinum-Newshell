@@ -40,6 +40,7 @@
   * Node.js
   * Express
   * OAuth
+  * PassportJS
 * Testing
 
   * Mocha
