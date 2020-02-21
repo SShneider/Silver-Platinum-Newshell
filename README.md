@@ -18,7 +18,7 @@
 
 * User profile:
 ![Image of User Profile](/ReadmeImages/userprofile.png)
-    * Editable and Deletable
+    * Editable and Deletable, with functional google login
     ![Image of Update user](/ReadmeImages/accountfeatures.PNG)
     * Admin access
     ![Image of Admin panel](/ReadmeImages/admin.png)
@@ -39,6 +39,7 @@
   * PostgreSQL
   * Node.js
   * Express
+  * OAuth
 * Testing
 
   * Mocha
