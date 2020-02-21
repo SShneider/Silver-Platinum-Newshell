@@ -192,7 +192,6 @@ describe('transactionTests - api', ()=>{
                                 .expect(200)
                                 .end((function (err, res) {
                                     if (err) return done(err);
-                                    console.log(res.body[0])
                                     expect(res.body[0].bankroll).to.be.equal(300000)
                                     done()
                             }));
@@ -213,7 +212,6 @@ describe('transactionTests - api', ()=>{
                             .expect(200)
                             .end((function (err, res) {
                                 if (err) return done(err);
-                                console.log(res.body)
                                 expect(res.body).to.be.an('array')
                                 expect(res.body.length).to.be.equal(1)
                                 expect(res.body[0].userId).to.be.equal(3)

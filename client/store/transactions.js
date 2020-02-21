@@ -30,7 +30,6 @@ export const iexUpdateThunk = (stocksToUpdate) => async dispatch => {
 	try{
 		let sendTickers = Object.keys(stocksToUpdate).join().toLowerCase()
 		const { data } = await axios.get('/api/stocks', {params:{tickers: sendTickers}})
-		console.log('in iex update', data)
 		dispatch(iexUpdate(data))
 	}catch(error){
 		console.error(error)

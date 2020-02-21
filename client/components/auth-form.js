@@ -27,14 +27,14 @@ const AuthForm = props => {
         <Form.Group controlId = "email">
           <Form.Label>Email address</Form.Label>
           <Form.Control type="email" placeholder ="Enter your email"/>
-          <Form.Text className="text-muted">
+          <Form.Text className="text-light">
            We'll never share your email with anyone else.
           </Form.Text>
         </Form.Group>
         <Form.Group controlId = "password">
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" placeholder ="Password"/>
-          <Form.Text className="text-muted">
+          <Form.Text className="text-light">
           {name==="signup" ? (<span>   Password must be between 5 and 15 characters long and include at least one of each of the following:
           <li>A lower case letter</li>
           <li>An upper case letter</li>
@@ -44,11 +44,11 @@ const AuthForm = props => {
         </Form.Group>
           <Button variant="primary" type="submit">
            {displayName}
-          </Button>
+          </Button>   <a href="/auth/google"><Button variant="primary">{displayName} with Google</Button></a>
           {error && error.response && <div> {error.response.data} </div>}
          </Form>
 
-      <a href="/auth/google">{displayName} with Google</a>
+    
     </div>
   )
 }
