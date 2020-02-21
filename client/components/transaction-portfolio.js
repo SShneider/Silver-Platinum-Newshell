@@ -44,13 +44,16 @@ class TransactionPortfolio extends Component{
         clearInterval(this.interval);
       }
     render(){
+        let totalPortfolio = 0
+        let transactionToPass = Object.values(this.props.portfolio)
         if(!this.props.isMarketOpen) clearInterval(this.interval)
         if(Object.keys(this.props.portfolio).length){
             this.state.initialLossGain(this.props.portfolio, this.props.getStockUpdate)
+            transactionToPass.forEach(stock => totalPortfolio=totalPortfolio+(stock.priceAtTransaction*stock.quantity))
         }
-        let transactionToPass = Object.values(this.props.portfolio)
         let isPortfolio = true//because our default unprompted view will be portfolio we start with it
         if(this.props.location.query && this.props.location.query.type==="transactions"){
+            totalPortfolio = null;
             transactionToPass = this.props.allTransactions;
             isPortfolio = false;
         }
@@ -72,7 +75,7 @@ class TransactionPortfolio extends Component{
                         <th>Ticker: </th>
                         <th>Price: </th>
                         <th>Quantity: </th>
-                        <th>Total: </th>
+                        <th>Total: {totalPortfolio}</th>
                         {isPortfolio ? null : <th>Type: </th>}
                         {isPortfolio ? null :<th>Date of:</th>}
                     </tr>

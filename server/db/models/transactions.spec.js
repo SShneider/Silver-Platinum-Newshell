@@ -26,7 +26,7 @@ describe('transactionTests', ()=>{
                 userId: 1,
             })
         }catch(err){
-            console.log(err)
+            console.error(err)
         }
         expect(Math.floor((Date.parse(createdTransaction.dateOfTransaction))/1000)).to.be.equal(Math.floor(Date.now()/1000))
     })
